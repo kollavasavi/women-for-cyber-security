@@ -1,0 +1,188 @@
+// Importing required modules
+const express = require('express');
+const path = require('path');
+const app = express();
+const port = 3000;
+
+// Middleware to serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Middleware to handle POST requests (for form submission)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Routes to serve frontend (HTML, CSS, JS)
+app.get('/', (req, res) => {
+    res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Women in Cybersecurity</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f0f2f5;
+                color: #333;
+                margin: 0;
+                padding: 0;
+            }
+            h1, h2 {
+                color: #5a4f92;
+            }
+            a {
+                color: #5a4f92;
+                text-decoration: none;
+            }
+            a:hover {
+                color: #6b58a9;
+            }
+            header {
+                background-color: #5a4f92;
+                color: white;
+                padding: 20px;
+                text-align: center;
+            }
+            header nav a {
+                margin: 0 15px;
+                font-weight: bold;
+            }
+            .hero {
+                background-color: #ffffff;
+                padding: 60px 20px;
+                text-align: center;
+                margin-top: 20px;
+            }
+            .hero button {
+                background-color: #5a4f92;
+                color: white;
+                padding: 10px 20px;
+                font-size: 18px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .hero button:hover {
+                background-color: #6b58a9;
+            }
+            .about {
+                padding: 40px;
+                text-align: center;
+                background-color: #ffffff;
+            }
+            .about p {
+                font-size: 18px;
+                line-height: 1.6;
+                max-width: 800px;
+                margin: auto;
+            }
+            .resources {
+                background-color: #f8f9fa;
+                padding: 40px 20px;
+                text-align: center;
+            }
+            .resources ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            .resources li {
+                margin: 10px 0;
+            }
+            footer {
+                background-color: #5a4f92;
+                color: white;
+                text-align: center;
+                padding: 20px;
+                position: absolute;
+                width: 100%;
+                bottom: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <h1>Women in Cybersecurity</h1>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/resources">Resources</a>
+                <a href="/contact">Contact</a>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>Empowering Women in the Cybersecurity World</h2>
+            <p>Join a community of passionate women shaping the future of cybersecurity.</p>
+            <button onclick="window.location.href='/join'">Join Our Community</button>
+        </section>
+
+        <!-- About Section -->
+        <section class="about">
+            <h2>Why Women in Cybersecurity Matter</h2>
+            <p>Women are an essential part of the cybersecurity industry, bringing diverse perspectives and innovative solutions.</p>
+        </section>
+
+        <!-- Resources Section -->
+        <section class="resources">
+            <h2>Resources for Women in Cybersecurity</h2>
+            <ul>
+                <li><a href="#">Free Online Courses</a></li>
+                <li><a href="#">Cybersecurity Webinars</a></li>
+                <li><a href="#">Networking Opportunities</a></li>
+            </ul>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2025 Women in Cybersecurity. All Rights Reserved.</p>
+        </footer>
+
+        <script>
+            // Example of a script for client-side interactivity
+            console.log("Website is loaded.");
+        </script>
+    </body>
+    </html>
+    `);
+});
+
+// About page route
+app.get('/about', (req, res) => {
+    res.send('<h1>About Us</h1><p>Learn about the importance of women in cybersecurity...</p>');
+});
+
+// Resources page route
+app.get('/resources', (req, res) => {
+    res.send('<h1>Resources</h1><p>Here are some great cybersecurity resources...</p>');
+});
+
+// Contact page route with form
+app.get('/contact', (req, res) => {
+    res.send(`
+        <h1>Contact</h1>
+        <form action="/submit" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <br><br>
+            <input type="submit" value="Submit">
+        </form>
+    `);
+});
+
+// Form submission route
+app.post('/submit', (req, res) => {
+    const { name, email } = req.body;
+    console.log('Form submitted:', name, email);
+    res.send(`<h1>Thank you, ${name}!</h1><p>We have received your information. We'll get in touch with you at ${email}.</p>`);
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
